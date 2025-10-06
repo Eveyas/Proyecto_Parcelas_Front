@@ -1,17 +1,16 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ParcelasPage from "./pages/ParcelasPage";
+import DashboardPage from "./pages/DashboardPage";
+import GestionParcelasPage from "./pages/GestionParcelasPage";
 
 function App() {
   return (
     <Router>
-      <nav className="bg-gray-800 p-4 text-white flex justify-center gap-4">
-        <Link to="/" className="hover:underline">Inicio</Link>
-        <Link to="/parcelas" className="hover:underline">Parcelas</Link>
-      </nav>
-
       <Routes>
-        <Route path="/" element={<h1 className="text-center mt-10 text-2xl">Bienvenido</h1>} />
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/parcelas" element={<ParcelasPage />} />
+        <Route path="/gestion-parcelas" element={<GestionParcelasPage />} />
       </Routes>
     </Router>
   );

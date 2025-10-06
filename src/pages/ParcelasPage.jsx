@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getDataParcelas } from "../modules/getDataParcelas";
+import DashboardLayout from "../components/layout/DashboardLayout";
 
 function ParcelasPage() {
   const [data, setData] = useState({});
@@ -52,19 +53,10 @@ function ParcelasPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
-      {/* ENCABEZADO */}
-      <header className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-6 shadow-lg">
-        <h1 className="text-3xl font-bold text-center tracking-wide">
-          Panel de Sensores Ambientales
-        </h1>
-        <p className="text-center text-blue-100 mt-2 text-sm">
-          Datos en tiempo real de temperatura, humedad, lluvia y radiación solar
-        </p>
-      </header>
-
-      {/* CONTENIDO PRINCIPAL */}
-      <main className="p-6 max-w-6xl mx-auto">
+    <DashboardLayout
+      title="Gestión de Parcelas Agrícolas"
+      subtitle="Visualiza y administra los datos en tiempo real"
+      >
         {/* SELECTOR DE SENSOR */}
         <div className="flex justify-between items-center mb-6 bg-white p-4 rounded-2xl shadow-md border border-gray-100">
           <div>
@@ -145,13 +137,7 @@ function ParcelasPage() {
         <p className="text-sm text-gray-500 mt-4 text-center">
           Mostrando {currentData.length} de {dataset.length} registros
         </p>
-      </main>
-
-      {/* FOOTER */}
-      <footer className="text-center text-gray-500 text-sm py-6">
-        © {new Date().getFullYear()} Sistema de Monitoreo Ambiental — Datos obtenidos de API.
-      </footer>
-    </div>
+       </DashboardLayout>
   );
 }
 
