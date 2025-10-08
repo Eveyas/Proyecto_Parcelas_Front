@@ -2,70 +2,110 @@ import { useState, useEffect } from 'react';
 import ParcelasMap from '../components/maps/ParcelasMap';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import ParcelasEliminadasList from '../components/CRUD/ParcelasEliminadasList';
-
-// Datos de ejemplo
-const datosEjemploParcelas = [
-  {
-    id: 1,
-    nombre: "Parcela Norte",
-    cultivo: "Maíz",
-    responsable: "Juan Pérez",
-    area: 5.2,
-    coords: { lat: 19.4326, lon: -99.1332 },
-    estado: "vigente"
-  },
-  {
-    id: 2,
-    nombre: "Parcela Sur",
-    cultivo: "Frijol",
-    responsable: "María García",
-    area: 3.8,
-    coords: { lat: 19.4285, lon: -99.1276 },
-    estado: "vigente"
-  }
-];
-
-const datosEjemploEliminadas = [
-  {
-    id: 101,
-    nombre: "Parcela Este Antigua",
-    cultivo: "Trigo",
-    responsable: "Carlos López",
-    area: 4.5,
-    ubicacion: { lat: 19.4350, lon: -99.1200 },
-    fechaEliminacion: "2024-01-15",
-    razon: "Cosecha completada"
-  },
-  {
-    id: 102,
-    nombre: "Parcela Oeste",
-    cultivo: "Sorgo",
-    responsable: "Ana Martínez",
-    area: 6.2,
-    ubicacion: { lat: 19.4300, lon: -99.1400 },
-    fechaEliminacion: "2024-02-20",
-    razon: "Rotación de cultivos"
-  }
-];
+import { parcelasService } from '../modules/apiService';
 
 const GestionParcelasPage = () => {
   const [parcelasVigentes, setParcelasVigentes] = useState([]);
   const [parcelasEliminadas, setParcelasEliminadas] = useState([]);
   const [activeTab, setActiveTab] = useState('vigentes');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchParcelasData = async () => {
+    try {
+      setLoading(true);
+      const [vigentesResponse, eliminadasResponse] = await Promise.all([
+        parcelasService.getParcelasVigentes(),
+        parcelasService.getParcelasEliminadas()
+      ]);
+
+      if (vigentesResponse.success) {
+        setParcelasVigentes(vigentesResponse.data || []);
+      }
+
+      if (eliminadasResponse.success) {
+        // Transformar datos al formato
+        const parcelasEliminadasFormateadas = (eliminadasResponse.data || []).map(parcela => ({
+          id: parcela.id_parcela,
+          nombre: parcela.nombre_parcela,
+          cultivo: parcela.cultivo,
+          responsable: parcela.responsable_nombre || 'No asignado',
+          area: parcela.area_hectareas,
+          ubicacion: parcela.ubicacion ? parseUbicacion(parcela.ubicacion) : null,
+          fechaEliminacion: parcela.fecha_eliminacion,
+          razon: parcela.razon_eliminacion || 'No especificada'
+        }));
+        setParcelasEliminadas(parcelasEliminadasFormateadas);
+      }
+
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching parcelas:', err);
+      setError('Error al cargar los datos de parcelas');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Función para parsear ubicación de string a objeto
+  const parseUbicacion = (ubicacionStr) => {
+    if (!ubicacionStr) return null;
+    
+    try {
+      const match = ubicacionStr.match(/Lat:\s*([\d.-]+),\s*Lon:\s*([\d.-]+)/);
+      if (match) {
+        return {
+          lat: parseFloat(match[1]),
+          lon: parseFloat(match[2])
+        };
+      }
+      
+      const coords = ubicacionStr.split(',').map(coord => parseFloat(coord.trim()));
+      if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+        return { lat: coords[0], lon: coords[1] };
+      }
+    } catch (error) {
+      console.warn('Error parsing ubicacion:', error);
+    }
+    
+    return null;
+  };
 
   useEffect(() => {
-    // Simular carga de datos
-    setParcelasVigentes(datosEjemploParcelas);
-    setParcelasEliminadas(datosEjemploEliminadas);
+    fetchParcelasData();
   }, []);
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex flex-col items-center justify-center h-96">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-green-500 mb-4"></div>
+          <p className="text-lg text-gray-600">Cargando datos de parcelas...</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout
       title="Gestión de Parcelas Agrícolas"
-      subtitle="Visualiza y administra los datos en tiempo real"
+      subtitle="Visualiza y administra las parcelas en tiempo real"
       bgGradient="from-green-50 via-white to-blue-50"
       headerGradient="from-green-600 to-blue-600"
     >
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+          <div className="flex items-center justify-between">
+            <p className="text-red-700">{error}</p>
+            <button 
+              onClick={fetchParcelasData}
+              className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
+            >
+              Reintentar
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Pestañas de navegación */}
       <div className="mb-6 bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
         <div className="flex border-b border-gray-200">
