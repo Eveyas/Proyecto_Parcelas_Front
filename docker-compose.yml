@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  frontend:
+    build: .
+    container_name: proyecto-parcelas-front
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
