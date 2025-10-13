@@ -1,9 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { checkAuth } from "./modules/apiService";
 import DashboardPage from "./pages/DashboardPage";
 import GestionParcelasPage from "./pages/GestionParcelasPage";
 import LoginPage from "./pages/LoginPage";
+
+const checkAuth = () => {
+  const token = localStorage.getItem("authToken");
+  return !!token;
+};
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -11,6 +15,7 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     setIsAuthenticated(checkAuth());
   }, []);
+
   if (isAuthenticated === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
