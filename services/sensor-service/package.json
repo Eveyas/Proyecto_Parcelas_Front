@@ -1,0 +1,19 @@
+{
+  "name": "sensor-service",
+  "version": "1.0.0",
+  "description": "Servicio B - Sensores emulados (generador asíncrono de datos IoT)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "stress": "node index.js --stress",
+    "test": "node index.js --selftest"
+  },
+  "keywords": ["iot", "sensors", "emulator", "async"],
+  "author": "Equipo Proyecto",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.13.0",
+    "uuid": "^9.0.0"
+  }
+}
