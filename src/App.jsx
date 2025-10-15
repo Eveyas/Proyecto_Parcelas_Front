@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import DashboardPage from "./pages/DashboardPage";
 import GestionParcelasPage from "./pages/GestionParcelasPage";
 import LoginPage from "./pages/LoginPage";
+import ParcelasPage from "./pages/ParcelasPage";
 
 const checkAuth = () => {
   const token = localStorage.getItem("authToken");
@@ -71,6 +72,14 @@ function App() {
           element={
             <ProtectedRoute>
               <GestionParcelasPage />
+            </ProtectedRoute>
+          } 
+        />
+          <Route 
+          path="/parcelas_page" 
+          element={
+            <ProtectedRoute>
+              <ParcelasPage />
             </ProtectedRoute>
           } 
         />
