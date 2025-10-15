@@ -1,4 +1,4 @@
-const API_BASE = 'https://sensores-async-api.onrender.com/api/sensors/all'; // API para sensores y parcelas
+const API_BASE = 'http://localhost:3000'; // API para sensores y parcelas
 const API_AUTH_BASE = 'http://localhost:3000'; // API de autenticación
 
 // Función para obtener el token del localStorage

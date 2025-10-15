@@ -2,13 +2,14 @@ import { sensorService } from './apiService';
 
 export async function getDataParcelas() {
   try {
-    const currentData = await sensorService.getDatosActuales();
-    
-    if (currentData.success && currentData.data) {
-      return transformToFrontendFormat(currentData.data);
+ const response = await fetch("https://sensores-async-api.onrender.com/api/sensors/all");
+
+    if (!response.ok) {
+      throw new Error("Error al obtener los datos de los sensores");
     }
-    
-    throw new Error('No se pudieron obtener datos actuales');
+
+    const data = await response.json();
+    return data;
     
   } catch (error) {
     console.error('Error en getDataParcelas:', error);
