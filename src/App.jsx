@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useEffect, useState } from "react";
 import DashboardPage from "./pages/DashboardPage";
 import GestionParcelasPage from "./pages/GestionParcelasPage";
-import ParcelasPage from "./pages/ParcelasPage"
+// import ParcelasPage from "./pages/ParcelasPage"
 import LoginPage from "./pages/LoginPage";
 import ParcelasPage from "./pages/ParcelasPage";
 
