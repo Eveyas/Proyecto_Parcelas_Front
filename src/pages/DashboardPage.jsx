@@ -10,13 +10,15 @@ import DashboardLayout from '../components/layout/DashboardLayout';
 const DashboardPage = () => {
   const [sensorData, setSensorData] = useState({});
   const [historicalData, setHistoricalData] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastUpdate, setLastUpdate] = useState(new Date());
-
+useEffect(()=>{
+console.log(historicalData)
+},[historicalData])
   const fetchAllData = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
       
       // Obtener datos actuales
       const currentData = await getDataParcelas();
@@ -43,7 +45,7 @@ const DashboardPage = () => {
       console.error('Error fetching data:', err);
       setError('Error al cargar los datos de sensores');
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -51,7 +53,7 @@ const DashboardPage = () => {
     fetchAllData();
     
     // Actualizar datos cada 60 segundos
-    const interval = setInterval(fetchAllData, 60000);
+    const interval = setInterval(fetchAllData, 3000);
     return () => clearInterval(interval);
   }, []);
 
@@ -147,7 +149,7 @@ const DashboardPage = () => {
               Última actualización: {lastUpdate.toLocaleString('es-MX')}
             </p>
             <p className="text-sm text-gray-600">
-              Datos en tiempo real • Actualización automática cada 60 segundos
+              Datos en tiempo real • Actualización automática cada 3 segundos
             </p>
           </div>
           <div className="flex items-center space-x-2 text-sm">

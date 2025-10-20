@@ -16,7 +16,7 @@ const SolarRadiationChart = ({ data }) => {
             labelFormatter={(value) => new Date(value).toLocaleString('es-MX')}
             formatter={(value) => [`${value} W/m²`, "Radiación"]}
           />
-          <Scatter dataKey="value" fill="#ffc658" />
+          <Scatter dataKey="valor" fill="#ffc658" />
         </ScatterChart>
       </ResponsiveContainer>
     </div>

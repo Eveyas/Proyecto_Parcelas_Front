@@ -18,7 +18,7 @@ const RainChart = ({ data }) => {
           />
           <Area 
             type="monotone" 
-            dataKey="value" 
+            dataKey="valor" 
             stroke="#8884d8" 
             fill="#8884d8" 
             fillOpacity={0.3}

@@ -18,7 +18,7 @@ const TemperatureChart = ({ data }) => {
           />
           <Line 
             type="monotone" 
-            dataKey="value" 
+            dataKey="valor" 
             stroke="#8884d8" 
             activeDot={{ r: 8 }} 
             strokeWidth={2}

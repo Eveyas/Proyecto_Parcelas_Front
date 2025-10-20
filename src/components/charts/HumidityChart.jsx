@@ -16,7 +16,7 @@ const HumidityChart = ({ data }) => {
             labelFormatter={(value) => new Date(value).toLocaleString('es-MX')}
             formatter={(value) => [`${value} %`, "Humedad"]}
           />
-          <Bar dataKey="value" fill="#82ca9d" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="valor" fill="#82ca9d" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
